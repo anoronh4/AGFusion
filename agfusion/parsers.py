@@ -824,7 +824,7 @@ parsers = {
     "starfusion": STARFusion,
     "tophatfusion": TopHatFusion,
     "mapsplice": MapSplice,
-    "cff": CommonFileFormat,
+    "cff": CommonFusionFormat,
     # 'fusionseq':FusionSeq,
     # 'prada':Prada,
     # 'gfusion':GFusion,
