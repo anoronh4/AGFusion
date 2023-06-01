@@ -216,7 +216,7 @@ class TestCommonFusionFormat(unittest.TestCase):
     def test_basic(self):
         """Test basic parsing."""
 
-        all_fusions = ["ACACA_IKZF3", "MVB12B_SHOC1", "SHOC1_MVB12B"]
+        all_fusions = ["ACACA_IKZF3", "MVB12B_C9orf84", "C9orf84_MVB12B"]
         for fusion in parsers.parsers["cff"](
             f"{BASEDIR}/CommonFusionFormat/" + "fids_out.tsv",
             db_human.logger,
@@ -236,7 +236,7 @@ class TestCommonFusionFormat(unittest.TestCase):
     def test_with_coding_effect(self):
         """Test parse output with coding effect."""
 
-        all_fusions = ["ACACA_IKZF3", "MVB12B_SHOC1", "SHOC1_MVB12B"]
+        all_fusions = ["ACACA_IKZF3", "MVB12B_C9orf84", "C9orf84_MVB12B"]
         for fusion in parsers.parsers["cff"](
             f"{BASEDIR}/CommonFusionFormat/" + "fids_out.tsv",
             db_human95.logger,
