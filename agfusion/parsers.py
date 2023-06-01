@@ -782,10 +782,10 @@ class CommonFusionFormat(_Parser):
         super().__init__(logger)
 
         data_indices = {
-            "gene5prime": 14,
-            "gene3prime": 16,
-            "gene5prime_junction": 2,
-            "gene3prime_junction": 5,
+            "gene5prime": 13,
+            "gene3prime": 15,
+            "gene5prime_junction": 1,
+            "gene3prime_junction": 4,
         }
 
         fin = open(infile, "r")
