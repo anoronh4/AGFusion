@@ -804,6 +804,38 @@ class CommonFusionFormat(_Parser):
 
         self._check_data()
 
+class CommonFusionFormatReann(_Parser):
+    """
+    CommonFusionFormat parser.
+    Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
+    """
+
+    def __init__(self, infile, logger):
+        super().__init__(logger)
+
+        data_indices = {
+            "gene5prime": 18,
+            "gene3prime": 20,
+            "gene5prime_junction": 1,
+            "gene3prime_junction": 4,
+        }
+
+        fin = open(infile, "r")
+        for line in fin.readlines():
+            line = line.strip().split("\t")
+
+            self.fusions.append(
+                {
+                    "gene5prime": line[data_indices["gene5prime"]],
+                    "gene3prime": line[data_indices["gene3prime"]],
+                    "gene5prime_junction": int(line[data_indices["gene5prime_junction"]]),
+                    "gene3prime_junction": int(line[data_indices["gene3prime_junction"]]),
+                }
+            )
+        fin.close()
+
+        self._check_data()
+
 
 
 parsers = {
@@ -825,6 +857,7 @@ parsers = {
     "tophatfusion": TopHatFusion,
     "mapsplice": MapSplice,
     "cff": CommonFusionFormat,
+    "cff_reann": CommonFusionFormatReann,
     # 'fusionseq':FusionSeq,
     # 'prada':Prada,
     # 'gfusion':GFusion,
