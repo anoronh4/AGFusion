@@ -276,6 +276,29 @@ class TestCommonFusionFormatReann(unittest.TestCase):
             )
             assert fusion.name in all_fusions, f"{fusion.name} not in list!"
 
+class TestCommonFusionFormatTranscript(unittest.TestCase):
+    """Test parse Common Fusion Format using Transcript ID columns"""
+
+    def test_basic(self):
+        """Test basic parsing."""
+
+        all_fusions = ["ACACA_IKZF3", "MVB12B_C9orf84", "C9orf84_MVB12B"]
+        for fusion in parsers.parsers["cff_transcript"](
+            f"{BASEDIR}/CommonFusionFormat/" + "fids_out.tsv",
+                db_human.logger,
+        ):
+            fusion = model.Fusion(
+                gene5prime=fusion["gene5prime"],
+                gene5primejunction=fusion["gene5prime_junction"],
+                gene3prime=fusion["gene3prime"],
+                gene3primejunction=fusion["gene3prime_junction"],
+                db=db_human,
+                pyensembl_data=data_human,
+                protein_databases=["pfam"],
+                noncanonical=False,
+            )
+            assert fusion.name in all_fusions, f"{fusion.name} not in list!"
+
 
 if __name__ == "__main__":
     unittest.main()
