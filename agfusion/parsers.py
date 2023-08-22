@@ -772,7 +772,44 @@ class LongGf(_Parser):
 
         self._check_data()
 
-class CommonFusionFormat(_Parser):
+class _CommonFusionFormatBasic(_Parser):
+    """
+    Parent class of CommonFusionFormat* parsers.
+    Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
+    """
+
+    def __init__(self,logger):
+        super().__init__(logger)
+
+    def _load_data_indices(self,infile,data_indices):
+        fin = open(infile, "r")
+        n = 0
+        for line in fin.readlines():
+            n += 1
+            line = line.strip().split("\t")
+
+            try:
+                self.fusions.append(
+                    {
+                        "gene5prime": line[data_indices["gene5prime"]],
+                        "gene3prime": line[data_indices["gene3prime"]],
+                        "gene5prime_junction": int(line[data_indices["gene5prime_junction"]]),
+                        "gene3prime_junction": int(line[data_indices["gene3prime_junction"]]),
+                    }
+                )
+            except ValueError as e:
+                print(e)
+                self.logger.warn(
+                    f"Skipping fusion on line {n} because one or more "
+                    + "of the provided breakpoints is not a valid"
+                    + " integer value."
+                )
+
+        fin.close()
+
+        self._check_data()
+
+class CommonFusionFormat(_CommonFusionFormatBasic):
     """
     CommonFusionFormat parser.
     Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
@@ -788,23 +825,9 @@ class CommonFusionFormat(_Parser):
             "gene3prime_junction": 4,
         }
 
-        fin = open(infile, "r")
-        for line in fin.readlines():
-            line = line.strip().split("\t")
+        self._load_data_indices(infile,data_indices)
 
-            self.fusions.append(
-                {
-                    "gene5prime": line[data_indices["gene5prime"]],
-                    "gene3prime": line[data_indices["gene3prime"]],
-                    "gene5prime_junction": int(line[data_indices["gene5prime_junction"]]),
-                    "gene3prime_junction": int(line[data_indices["gene3prime_junction"]]),
-                }
-            )
-        fin.close()
-
-        self._check_data()
-
-class CommonFusionFormatReann(_Parser):
+class CommonFusionFormatReann(_CommonFusionFormatBasic):
     """
     CommonFusionFormat parser.
     Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
@@ -820,23 +843,9 @@ class CommonFusionFormatReann(_Parser):
             "gene3prime_junction": 4,
         }
 
-        fin = open(infile, "r")
-        for line in fin.readlines():
-            line = line.strip().split("\t")
+        self._load_data_indices(infile,data_indices)
 
-            self.fusions.append(
-                {
-                    "gene5prime": line[data_indices["gene5prime"]],
-                    "gene3prime": line[data_indices["gene3prime"]],
-                    "gene5prime_junction": int(line[data_indices["gene5prime_junction"]]),
-                    "gene3prime_junction": int(line[data_indices["gene3prime_junction"]]),
-                }
-            )
-        fin.close()
-
-        self._check_data()
-
-class CommonFusionFormatTranscript(_Parser):
+class CommonFusionFormatTranscript(_CommonFusionFormatBasic):
     """
     CommonFusionFormatTranscript parser.
     Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
@@ -852,21 +861,7 @@ class CommonFusionFormatTranscript(_Parser):
             "gene3prime_junction": 4,
         }
 
-        fin = open(infile, "r")
-        for line in fin.readlines():
-            line = line.strip().split("\t")
-
-            self.fusions.append(
-                {
-                    "gene5prime": line[data_indices["gene5prime"]],
-                    "gene3prime": line[data_indices["gene3prime"]],
-                    "gene5prime_junction": int(line[data_indices["gene5prime_junction"]]),
-                    "gene3prime_junction": int(line[data_indices["gene3prime_junction"]]),
-                }
-            )
-        fin.close()
-
-        self._check_data()
+        self._load_data_indices(infile,data_indices)
 
 
 parsers = {
