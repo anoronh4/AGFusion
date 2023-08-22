@@ -778,9 +778,6 @@ class _CommonFusionFormatBasic(_Parser):
     Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
     """
 
-    def __init__(self,logger):
-        super().__init__(logger)
-
     def _load_data_indices(self,infile,data_indices):
         fin = open(infile, "r")
         n = 0
@@ -825,7 +822,7 @@ class CommonFusionFormat(_CommonFusionFormatBasic):
             "gene3prime_junction": 4,
         }
 
-        self._load_data_indices(infile,data_indices)
+        self._load_data_indices(infile, data_indices)
 
 class CommonFusionFormatReann(_CommonFusionFormatBasic):
     """
@@ -843,7 +840,7 @@ class CommonFusionFormatReann(_CommonFusionFormatBasic):
             "gene3prime_junction": 4,
         }
 
-        self._load_data_indices(infile,data_indices)
+        self._load_data_indices(infile, data_indices)
 
 class CommonFusionFormatTranscript(_CommonFusionFormatBasic):
     """
