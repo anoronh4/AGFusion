@@ -156,6 +156,7 @@ You can provide as input output files from fusion-finding algorithms. Currently 
 * MapSplice (only if --gene-gtf specified)
 * [STAR-Fusion](https://github.com/STAR-Fusion/STAR-Fusion)
 * TopHat-Fusion
+* [Common Fusion Format](https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields)
 
 
 

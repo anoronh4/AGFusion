@@ -772,6 +772,94 @@ class LongGf(_Parser):
 
         self._check_data()
 
+class _CommonFusionFormatBasic(_Parser):
+    """
+    Parent class of CommonFusionFormat* parsers.
+    Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
+    """
+
+    def _load_data_indices(self,infile,data_indices):
+        fin = open(infile, "r")
+        n = 0
+        for line in fin.readlines():
+            n += 1
+            line = line.strip().split("\t")
+
+            try:
+                self.fusions.append(
+                    {
+                        "gene5prime": line[data_indices["gene5prime"]],
+                        "gene3prime": line[data_indices["gene3prime"]],
+                        "gene5prime_junction": int(line[data_indices["gene5prime_junction"]]),
+                        "gene3prime_junction": int(line[data_indices["gene3prime_junction"]]),
+                    }
+                )
+            except ValueError as e:
+                print(e)
+                self.logger.warn(
+                    f"Skipping fusion on line {n} because one or more "
+                    + "of the provided breakpoints is not a valid"
+                    + " integer value."
+                )
+
+        fin.close()
+
+        self._check_data()
+
+class CommonFusionFormat(_CommonFusionFormatBasic):
+    """
+    CommonFusionFormat parser.
+    Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
+    """
+
+    def __init__(self, infile, logger):
+        super().__init__(logger)
+
+        data_indices = {
+            "gene5prime": 13,
+            "gene3prime": 15,
+            "gene5prime_junction": 1,
+            "gene3prime_junction": 4,
+        }
+
+        self._load_data_indices(infile, data_indices)
+
+class CommonFusionFormatReann(_CommonFusionFormatBasic):
+    """
+    CommonFusionFormat parser.
+    Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
+    """
+
+    def __init__(self, infile, logger):
+        super().__init__(logger)
+
+        data_indices = {
+            "gene5prime": 18,
+            "gene3prime": 20,
+            "gene5prime_junction": 1,
+            "gene3prime_junction": 4,
+        }
+
+        self._load_data_indices(infile, data_indices)
+
+class CommonFusionFormatTranscript(_CommonFusionFormatBasic):
+    """
+    CommonFusionFormatTranscript parser.
+    Defined here: https://github.com/ccmbioinfo/MetaFusion/wiki/metafusion-file-formats#cff-fields
+    """
+
+    def __init__(self, infile, logger):
+        super().__init__(logger)
+
+        data_indices = {
+            "gene5prime": 37,
+            "gene3prime": 38,
+            "gene5prime_junction": 1,
+            "gene3prime_junction": 4,
+        }
+
+        self._load_data_indices(infile,data_indices)
+
 
 parsers = {
     "arriba": Arriba,
@@ -791,6 +879,9 @@ parsers = {
     "starfusion": STARFusion,
     "tophatfusion": TopHatFusion,
     "mapsplice": MapSplice,
+    "cff": CommonFusionFormat,
+    "cff_reann": CommonFusionFormatReann,
+    "cff_transcript": CommonFusionFormatTranscript,
     # 'fusionseq':FusionSeq,
     # 'prada':Prada,
     # 'gfusion':GFusion,
