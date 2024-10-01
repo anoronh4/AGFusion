@@ -35,6 +35,7 @@ Some other things to know:
   * [Canonical gene isoforms](#canonical-gene-isoforms)
   * [Input from fusion-finding algorithms](#input-from-fusion-finding-algorithms)
   * [Graphical parameters](#graphical-parameters)
+- [Building your own database](#building-your-own-database)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
 - [Citing AGFusion](#citing-agfusion)
@@ -215,6 +216,19 @@ agfusion annotate \
 
 ![alt tag](https://github.com/murphycj/AGFusion/blob/master/doc/ENSMUST00000064477-ENSMUST00000002487-rescale.png)
 ![alt tag](https://github.com/murphycj/AGFusion/blob/master/doc/ENSMUST00000122054-ENSMUST00000070330-rescale.png)
+
+# Building your own database
+AGFusion uses a pre-built SQLite database to annotation gene fusions; in addition to data from pyensembl. The SQLite databases are stored on AWS S3.
+
+Follow the steps below if you want to build your own SQLite database:
+
+(1) Install [mysqlclient](https://github.com/PyMySQL/mysqlclient).
+
+(2) Download and unzip the PFAM reference file: [https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.clans.tsv.gz](https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.clans.tsv.gz)
+
+(3) Install your desired pyensembl reference genome. For example: `pyensembl install --release 111`.
+
+(4) Build the AGFusion database: `agfusion build -d . -s homo_sapiens -r 111 --pfam Pfam-A.clans.tsv`
 
 # Troubleshooting
 
